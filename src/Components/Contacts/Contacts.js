@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Modal from '../Module/Modal';
-import styles from './Contact.module.css'
+import styles from './Contact.module.css';
 
 function Contacts(){
 
@@ -9,21 +9,31 @@ function Contacts(){
 
 
     useEffect(() => {
-        fetch("http://localhost:3000/contact").then(res => res.json()).then((data) => {
+        fetch("https://node-api-contact.herokuapp.com/contact").then(res => res.json()).then((data) => {
             data.sort((a,b) => a.name.localeCompare(b.name));
             setContacts(data);
         })
     }, []);
 
-    function loadImage(a){
-        const base64String = btoa(String.fromCharCode(...new Uint8Array(a.data)));
-        return `data:image/jpeg;base64,${base64String}`;
+    function loadImage(img){
+        return `${img}`;
     }
 
     function phoneMask (number){
         var x = number.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
         number = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
         return number;
+    }
+
+    function formatDate(date){
+        date = date.split(/-/g);
+        return `${date[2]}/${date[1]}/${date[0]}`;
+    }
+
+    function deleteContact(id){
+        fetch('https://node-api-contact.herokuapp.com/contact/' + id ,{
+            method: 'delete',
+        }).then(r=>console.log(r)).catch(e=>console.log(e));
     }
 
     return(
@@ -44,16 +54,16 @@ function Contacts(){
 
                     {contacts.map(contact => (
                         <div key={contact.id} className={styles.contactCard}>
-                        <img src={loadImage(contact.profilePhoto)}/>
+                        <img src={loadImage(contact.profilePhoto)} alt={contact.name}/>
                         <div className={styles.contactData}>
                             <div className={styles.contactName}><b>Nome: </b>{contact.name}</div>
                             <div className={styles.contactEmail}><b>E-mail: </b>{contact.email}</div>
                             <div className={styles.contactPhone}><b>Telefone: </b>{phoneMask(contact.phone)}</div>
-                            <div className={styles.contactBirthDate}><b>Data de nascimento: </b>{contact.birthDate}</div>
+                            <div className={styles.contactBirthDate}><b>Data de nascimento: </b>{formatDate(contact.birthDate)}</div>
                         </div>
                         <div className={styles.contactAction}>
                             <button className={styles.editButton}>EDITAR</button>
-                            <button className={styles.deleteButton}>EXCLUIR</button>
+                            <button className={styles.deleteButton} onClick={()=>{deleteContact(contact.id)}}>EXCLUIR</button>
                         </div>
                         </div>
                     ))}

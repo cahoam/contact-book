@@ -79,3 +79,9 @@
     border-radius: 4px;
     font-size: 17px;
 }
+
+.inputContainer input[type='file']{
+    font-size: 14px;
+    margin-top: 10px;
+    border: 0;
+}
