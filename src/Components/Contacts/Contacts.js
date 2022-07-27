@@ -9,11 +9,15 @@ function Contacts(){
 
 
     useEffect(() => {
+        getContacts();
+    }, []);
+
+    function getContacts(){
         fetch("https://node-api-contact.herokuapp.com/contact").then(res => res.json()).then((data) => {
             data.sort((a,b) => a.name.localeCompare(b.name));
             setContacts(data);
         })
-    }, []);
+    }
 
     function loadImage(img){
         return `${img}`;
@@ -30,10 +34,12 @@ function Contacts(){
         return `${date[2]}/${date[1]}/${date[0]}`;
     }
 
-    function deleteContact(id){
-        fetch('https://node-api-contact.herokuapp.com/contact/' + id ,{
+    async function deleteContact(id){
+        await fetch('https://node-api-contact.herokuapp.com/contact/' + id ,{
             method: 'delete',
         }).then(r=>console.log(r)).catch(e=>console.log(e));
+        
+        getContacts();
     }
 
     return(
@@ -62,7 +68,7 @@ function Contacts(){
                             <div className={styles.contactBirthDate}><b>Data de nascimento: </b>{formatDate(contact.birthDate)}</div>
                         </div>
                         <div className={styles.contactAction}>
-                            <button className={styles.editButton}>EDITAR</button>
+                            <button className={styles.editButton} onClick={()=>{}}>EDITAR</button>
                             <button className={styles.deleteButton} onClick={()=>{deleteContact(contact.id)}}>EXCLUIR</button>
                         </div>
                         </div>
@@ -74,7 +80,7 @@ function Contacts(){
             </div>
 
 
-            {modalOpen && <Modal setOpenModal={setModalOpen} />}
+            {modalOpen && <Modal setOpenModal={setModalOpen} setContacts={setContacts}/>}
 
 
         </div>

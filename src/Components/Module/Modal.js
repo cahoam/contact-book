@@ -4,13 +4,19 @@ import styles from './Modal.module.css';
 
 import "react-datepicker/dist/react-datepicker.css";
 
-function Modal({ setOpenModal }) {
+function Modal({ setOpenModal, setContacts }) {
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [profilePhoto, setProfilePhoto] = useState('');
   const [birthDate, setStartDate] = useState(null);
+
+
+  // useEffect(()=>{
+  //   console.log(user)
+  // },[user]);
+
 
 
   function phoneMask (e){
@@ -28,6 +34,13 @@ function Modal({ setOpenModal }) {
     // reader.onerror = function (error) {
     //   console.log('Error: ', error);
     // };
+  }
+
+  function getContacts(){
+    fetch("https://node-api-contact.herokuapp.com/contact").then(res => res.json()).then((data) => {
+        data.sort((a,b) => a.name.localeCompare(b.name));
+        setContacts(data);
+    })
   }
 
   function validForm(){
@@ -71,7 +84,6 @@ function Modal({ setOpenModal }) {
     if(!isValid){
       alert('Verifique os erros no formulário!');
     }
-
     return isValid;
   }
 
@@ -88,6 +100,7 @@ function Modal({ setOpenModal }) {
         body: JSON.stringify({ name, email, phone: phone.replace( /\D/g, '' ), birthDate, profilePhoto })
       }).then(r => r.json()).then(data =>{
         alert('Inserido com sucesso!');
+        getContacts();
         setOpenModal(false);
       }).catch(e=>{
         console.log(e)
@@ -115,7 +128,6 @@ function Modal({ setOpenModal }) {
               <input type="text" value={phone} onChange={phoneMask} id="phoneInput"/>
             </div>
             <div className={styles.inputContainer}>
-              {/* <label>Foto</label> */}
               <input type="file" onChange={getFile} id="profilePictureInput"/>
             </div>
           </div>
