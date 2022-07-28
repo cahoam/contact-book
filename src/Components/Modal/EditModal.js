@@ -131,11 +131,11 @@ function EditModal({ setEditOpenModal, contact }) {
           </div>
 
           <div className={styles.bodyRight}>
-          <div className={styles.inputContainer}>
-              <label>E-mail</label>
-              <input value={email} tabIndex="2" onChange={(e)=>{setEmail(e.target.value)}} type="email" id="emailInput"/>
-          </div>
-                <div className={styles.inputContainer}>
+            <div className={styles.inputContainer}>
+                <label>E-mail</label>
+                <input value={email} tabIndex="2" onChange={(e)=>{setEmail(e.target.value)}} type="email" id="emailInput"/>
+            </div>
+            <div className={styles.inputContainer}>
               <label>Data de nascimento</label>
               <DatePicker 
                 selected={birthDate}
@@ -146,6 +146,12 @@ function EditModal({ setEditOpenModal, contact }) {
                 maxDate={new Date()}
               />
             </div>
+
+            <div className={styles.inputContainer}>
+                <img src={profilePhoto}/>
+            </div>
+
+
           </div>
         </div>
 

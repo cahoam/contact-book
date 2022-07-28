@@ -80,3 +80,8 @@
     margin-top: 10px;
     border: 0;
 }
+
+.inputContainer img {
+    width: 70px;
+    height: 70px;
+}
