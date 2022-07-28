@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { ContactContext } from '../../Context/ContactContext';
 import ContactCard from './ContactCard';
-import Modal from '../Module/Modal';
+import Modal from '../Modal/AddModal';
 import styles from './Contact.module.css';
 
 function Contacts(){
