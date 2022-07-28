@@ -86,21 +86,24 @@ function EditModal({ setEditOpenModal, contact }) {
 
   function editUser(){
     if(validForm())
-      fetch('https://node-api-contact.herokuapp.com/contact/1',{
-        method: 'put',
-        headers: {    
-          'Accept': 'application/json, text/plain, */*',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ id, name, email, phone: phone.replace( /\D/g, '' ), birthDate, profilePhoto })
-      }).then(r => r.json()).then(data =>{
-        console.log(data)
-        alert('Atualizado com sucesso!');
-        getContacts();
-        setEditOpenModal(false);
-      }).catch(e=>{
-        console.log(e)
-      })
+        fetch('https://node-api-contact.herokuapp.com/contact',{
+            method: 'put',
+            headers: {    
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id, name, email, phone: phone.replace( /\D/g, '' ), birthDate, profilePhoto })
+        }).then(r => r.json()).then(data =>{
+            if(data.status === "success"){
+                alert('Atualizado com sucesso!');
+                getContacts();
+                setEditOpenModal(false);
+            } else {
+                alert("Falha ao editar usuário");
+            }
+        }).catch(e=>{
+            alert("Falha ao editar usuário");
+        })
   }
 
 

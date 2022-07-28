@@ -86,12 +86,16 @@ function Modal({ setOpenModal }) {
         },
         body: JSON.stringify({ name, email, phone: phone.replace( /\D/g, '' ), birthDate, profilePhoto })
       }).then(r => r.json()).then(data =>{
-        alert('Inserido com sucesso!');
-        getContacts();
-        setOpenModal(false);
+        if(data.status === "success"){
+          alert('Inserido com sucesso!');
+          getContacts();
+          setOpenModal(false);
+        } else {
+          alert('Falha ao inserir!');
+        }
       }).catch(e=>{
-        console.log(e)
-      })
+        alert('Falha ao inserir!');
+      });
   }
 
 
