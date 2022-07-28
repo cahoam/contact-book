@@ -15,7 +15,7 @@ function ContactContextProvider(props){
         fetch("https://node-api-contact.herokuapp.com/contact").then(res => res.json()).then((data) => {
             data.sort((a,b) => a.name.localeCompare(b.name));
             setContacts(data);
-            });
+        });
     }
 
     async function deleteContact(id){
