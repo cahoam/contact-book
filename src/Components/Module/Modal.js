@@ -1,23 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import DatePicker from "react-datepicker";
 import styles from './Modal.module.css';
+import { ContactContext } from '../../Context/ContactContext';
 
 import "react-datepicker/dist/react-datepicker.css";
 
-function Modal({ setOpenModal, setContacts }) {
+function Modal({ setOpenModal }) {
+
+  const { getContacts } = useContext(ContactContext);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [profilePhoto, setProfilePhoto] = useState('');
   const [birthDate, setStartDate] = useState(null);
-
-
-  // useEffect(()=>{
-  //   console.log(user)
-  // },[user]);
-
-
 
   function phoneMask (e){
     var x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
@@ -34,13 +30,6 @@ function Modal({ setOpenModal, setContacts }) {
     // reader.onerror = function (error) {
     //   console.log('Error: ', error);
     // };
-  }
-
-  function getContacts(){
-    fetch("https://node-api-contact.herokuapp.com/contact").then(res => res.json()).then((data) => {
-        data.sort((a,b) => a.name.localeCompare(b.name));
-        setContacts(data);
-    })
   }
 
   function validForm(){
@@ -87,9 +76,7 @@ function Modal({ setOpenModal, setContacts }) {
     return isValid;
   }
 
-
   function insertUser(){
-
     if(validForm())
       fetch('https://node-api-contact.herokuapp.com/contact',{
         method: 'post',
@@ -108,7 +95,6 @@ function Modal({ setOpenModal, setContacts }) {
   }
 
 
-
   return (
     <div className={styles.modalBackground}>
       <div className={styles.modalContainer}>
@@ -121,40 +107,45 @@ function Modal({ setOpenModal, setContacts }) {
           <div className={styles.bodyLeft}>
             <div className={styles.inputContainer}>
               <label>Nome</label>
-              <input value={name} onChange={(e)=>{setName(e.target.value)}} type="text" id="nameInput"/>
+              <input value={name} tabIndex="1" onChange={(e)=>{setName(e.target.value)}} type="text" id="nameInput"/>
             </div>
             <div className={styles.inputContainer}>
               <label>Telefone</label>
-              <input type="text" value={phone} onChange={phoneMask} id="phoneInput"/>
+              <input type="text" tabIndex="3" value={phone} onChange={phoneMask} id="phoneInput"/>
             </div>
             <div className={styles.inputContainer}>
-              <input type="file" onChange={getFile} id="profilePictureInput"/>
+              <input type="file" tabIndex="5" onChange={getFile} id="profilePictureInput"/>
             </div>
           </div>
 
           <div className={styles.bodyRight}>
           <div className={styles.inputContainer}>
               <label>E-mail</label>
-              <input value={email} onChange={(e)=>{setEmail(e.target.value)}} type="email" id="emailInput"/>
+              <input value={email} tabIndex="2" onChange={(e)=>{setEmail(e.target.value)}} type="email" id="emailInput"/>
             </div>
             <div className={styles.inputContainer}>
               <label>Data de nascimento</label>
-              <DatePicker selected={birthDate} onChange={(date) => setStartDate(date)} dateFormat="dd/MM/yyyy" id="bitrhDateInput"/>
+              <DatePicker 
+                selected={birthDate}
+                onChange={(date) => setStartDate(date)} 
+                dateFormat="dd/MM/yyyy"
+                tabIndex="4"
+                id="bitrhDateInput"
+                maxDate={new Date()}
+              />
             </div>
 
           </div>
         </div>
 
-
-
         <div className={styles.footer}>
-          <button onClick={() => {
+          <button className={styles.cancelButton} onClick={() => {
               setOpenModal(false);
-            }} id="cancelBtn">
+            }}>
             Cancel
           </button>
 
-          <button onClick={insertUser}>Enviar</button>
+          <button onClick={insertUser}>Salvar</button>
         </div>
       </div>
     </div>

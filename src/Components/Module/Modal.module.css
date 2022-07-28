@@ -11,7 +11,7 @@
   }
   
 .modalContainer {
-    width: 900px;
+    width: 800px;
     height: 400px;
     border-radius: 5px;
     background-color: white;
@@ -29,8 +29,9 @@
 .modalContainer .footer {
     flex: 20%;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
+    padding: 0 50px;
 }
   
 .modalContainer .footer button {
@@ -45,8 +46,8 @@
     cursor: pointer;
 }
   
-#cancelBtn {
-    background-color: crimson;
+.modalContainer .footer button.cancelButton {
+    background-color: crimson !important;
 }
 
 
@@ -54,16 +55,10 @@
 
 .body {
     padding: 0 50px;
-    /* background-color: aqua; */
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
-
-/* .bodyLeft, .bodyRight{
-    display: flex;
-    flex-direction: column;
-} */
 
 .inputContainer{
     display: flex;
